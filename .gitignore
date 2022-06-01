@@ -1,0 +1,8 @@
+Lib/site-packages/
+pyvenv.cfg
+Scripts/
+.idea/
+/locallibrary/locallibrary/__pycache__
+/locallibrary/catalog/__pycache__
+/locallibrary/catalog/migrations/
+/locallibrary/locallibrary/settings.py
