@@ -6,3 +6,4 @@ Scripts/
 /locallibrary/catalog/__pycache__
 /locallibrary/catalog/migrations/
 /locallibrary/locallibrary/settings.py
+/Old_migrations

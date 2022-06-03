@@ -2,6 +2,13 @@ from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 import uuid  # Required for unique book instances
 
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    pass
+    # class Meta:
+    #     db_table = 'auth_user'
+
 
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
