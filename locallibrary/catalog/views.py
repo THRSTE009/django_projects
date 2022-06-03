@@ -16,8 +16,10 @@ def index(request):
     # Available books (status = 'a')
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
 
-    # The 'all()' is implied by default.
-    num_authors = Author.objects.count()
+    num_authors = Author.objects.count() # The 'all()' is implied by default.
+
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
 
     context = {
         'num_books': num_books,
@@ -25,6 +27,7 @@ def index(request):
         'num_instances_available': num_instances_available,
         'num_authors': num_authors,
         'num_genres': num_genres,
+        'num_visits': num_visits,
     }
 
     # Render the HTML template index.html with the data in the context variable
@@ -57,7 +60,7 @@ class BookListView(generic.ListView):
     # def get_queryset(self):
     #     return Book.objects.filter(title__icontains='war')[:5]
 
-    template_name = 'books/my_arbitray_template_name_list.html' # Specify your own template name/location.
+    # template_name = 'books/my_arbitray_template_name_list.html' # Specify your own template name/location.
 
 
 

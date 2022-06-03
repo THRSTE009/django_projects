@@ -14,4 +14,6 @@
     <li><strong>Authors:</strong> {{ num_authors }}</li>
     <li><strong>Genres:</strong> {{ num_genres }}</li>
   </ul>
+  <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+  <!--  Django built-in template tag pluralize to add an "s" when the page has been visited multiple times. -->
 {% endblock %}
