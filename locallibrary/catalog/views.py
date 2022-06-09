@@ -1,8 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
 from catalog.models import Book, Author, BookInstance, Genre
 from django.views import generic
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin   # Tutorial 8 imports
 
 
 def index(request):
@@ -43,7 +44,7 @@ class BookListView(generic.ListView):
     # (i.e. generically "<the model name>_list").
 
     model = Book
-    paginate_by = 2
+    paginate_by = 10
 
     # context_object_name = 'book_list' # custom name for the list as a template variable.
         # context passed by default as "object_list" or "book_list".
@@ -61,7 +62,6 @@ class BookListView(generic.ListView):
     #     return Book.objects.filter(title__icontains='war')[:5]
 
     # template_name = 'books/my_arbitray_template_name_list.html' # Specify your own template name/location.
-
 
 
 # def book_detail_view(request, primary_key):   *CLASS-BASED ALTERNATIVE FOR THE DETAIL VIEW*
@@ -88,3 +88,27 @@ class AuthorDetailView(generic.DetailView):
     #     context = super(AuthorListView, self).get_context_data(**kwargs)
     #     context['num_instances'] = 'num_instances'
     #     return context
+
+
+class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+    """Generic class-based view listing books on loan to current user."""
+    model = BookInstance
+    template_name ='catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        # 'o' is stored code for 'on loan'. Ordered by the due_back date so that the oldest items are displayed first.
+        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+
+class AllLoanedBooksListView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    """Generic class-based view listing all books on loan."""
+    model = BookInstance
+    template_name ='catalog/bookinstance_list_borrowed_users.html'
+    paginate_by = 10
+
+    permission_required = 'catalog.can_mark_returned'
+
+    def get_queryset(self):
+        # 'o' is stored code for 'on loan'. Ordered by the due_back date so that the oldest items are displayed first.
+        return BookInstance.objects.filter(status__exact='o').order_by('due_back')
