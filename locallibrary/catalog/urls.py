@@ -17,5 +17,20 @@ urlpatterns = [
 
     path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
     path('borrowed/', views.AllLoanedBooksListView.as_view(), name='all-borrowed'),
+]
 
+#   Tutorial 9 URLs
+urlpatterns += [
+# The URL configuration will redirect URLs with the format /catalog/book/<bookinstance_id>/renew/ to
+    # the function named renew_book_librarian() in views.py, and send the BookInstance id as the parameter named pk.
+    # The pattern only matches if pk is a correctly formatted uuid.
+    path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
+
+    path('author/create/', views.AuthorCreate.as_view(), name='author-create'),
+    path('author/<int:pk>/update/', views.AuthorUpdate.as_view(), name='author-update'),
+    path('author/<int:pk>/delete/', views.AuthorDelete.as_view(), name='author-delete'),
+
+    path('book/create/', views.BookCreate.as_view(), name='book-create'),
+    path('book/<int:pk>/update/', views.BookUpdate.as_view(), name='book-update'),
+    path('book/<int:pk>/delete/', views.BookDelete.as_view(), name='book-delete'),
 ]
